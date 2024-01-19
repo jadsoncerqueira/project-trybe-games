@@ -14,13 +14,16 @@ public class TestTrybeGamesDatabase
     [MemberData(nameof(DataTestGetGamesPlayedBy))]
     public void TestGetGamesPlayedBy(TrybeGamesDatabase databaseEntry, int playerIdEntry, List<Game> expected)
     {
-        throw new NotImplementedException();
 
         // Arrange
-        
+        Mock<TrybeGamesDatabase> mock = new();
+        mock.Setup(m => m.GetGamesPlayedBy(It.IsAny<Player>())).Returns(databaseEntry.GetGamesPlayedBy(It.IsAny<Player>()));
+
         // AcT
+        var response = mock.Object.GetGamesPlayedBy(new Player { Id = playerIdEntry });
 
         // Assert
+        Assert.Equal(response, expected);
     }
 
     public static TheoryData<TrybeGamesDatabase, int, List<Game>> DataTestGetGamesPlayedBy => new TheoryData<TrybeGamesDatabase, int, List<Game>>

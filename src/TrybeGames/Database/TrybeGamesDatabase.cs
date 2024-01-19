@@ -60,7 +60,7 @@ public class TrybeGamesDatabase
         var gamesDistinct = from game in Games
                             select game.GameType;
         
-        return gamesDistinct.ToList();
+        return gamesDistinct.Distinct().ToList();
     }
 
     // 9. Crie a funcionalidade de buscar todos os estúdios de jogos junto dos seus jogos desenvolvidos com suas pessoas jogadoras
