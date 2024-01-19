@@ -147,21 +147,23 @@ public class TrybeGamesController
     public void AddGame()
     {
         // implementar
-        Game game = new ();
-        Console.WriteLine("Digite o nome do Game:");
-        game.Name = Console.ReadLine();
-        Console.WriteLine("Digite a data de lançamento do Game (dd/MM/yyyy):");
-        string releaseDateString = Console.ReadLine();
-        game.ReleaseDate = DateTime.ParseExact(releaseDateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-        Console.WriteLine("Digite o tipo de jogo (Action, Adventure, Puzzle, Strategy, Simulation, Sports, Other):");
-        string gameTypeInput = Console.ReadLine();
-        game.GameType = (GameType)Enum.Parse(typeof(GameType), gameTypeInput);
-        Console.WriteLine("Digite o nome do Game Studio:");
-        game.DeveloperStudio = SelectGameStudio(database.GameStudios).Id;
-        int id = database.Games.Count + 1;
-        game.Id = id;
-        database.Games.Add(game);
-        Console.WriteLine("Game adicionado com sucesso!");
+        Console.WriteLine("Qual o nome do novo jogo?");
+        string gameName = Console.ReadLine();
+        Console.WriteLine("Qual a data de lançamento do novo jogo?");
+        DateTime releaseDate = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InstalledUICulture);
+        Console.WriteLine("Qual o tipo de jogo do novo jogo?");
+        string escolha = Console.ReadLine();
+        if (Enum.TryParse<GameType>(escolha, out GameType gameType)) {
+            int novoId = database.Games.Count;
+            Game novo = new Game()
+            {
+                Id = novoId > 0 ? novoId : 1,
+                Name = gameName,
+                ReleaseDate = releaseDate,
+                GameType = gameType
+            };
+            database.Games.Add(novo);
+        }
     }
 
     public void ChangeGameStudio(Game game)
