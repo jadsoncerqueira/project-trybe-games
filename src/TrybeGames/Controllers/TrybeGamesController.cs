@@ -152,21 +152,16 @@ public class TrybeGamesController
         game.Name = Console.ReadLine();
         Console.WriteLine("Digite a data de lançamento do Game (dd/MM/yyyy):");
         string releaseDateString = Console.ReadLine();
-        DateTime releaseDate;
-        if (!DateTime.TryParseExact(releaseDateString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out releaseDate))
-        {
-            Console.WriteLine("Data inválida! Tente novamente.");
-            return;
-        }
-        game.ReleaseDate = releaseDate;
-         Console.WriteLine("Qual o tipo de jogo? Action, Adventure, Puzzle, Strategy, Simulation, Sports, Other");
+        game.ReleaseDate = DateTime.ParseExact(releaseDateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        Console.WriteLine("Digite o tipo de jogo (Action, Adventure, Puzzle, Strategy, Simulation, Sports, Other):");
         string gameTypeInput = Console.ReadLine();
-        if(Enum.TryParse(gameTypeInput, out GameType gameType)) {
-            game.GameType = gameType;
-            database.Games.Add(game);
-        }
+        game.GameType = (GameType)Enum.Parse(typeof(GameType), gameTypeInput);
+        Console.WriteLine("Digite o nome do Game Studio:");
+        game.DeveloperStudio = SelectGameStudio(database.GameStudios).Id;
+        int id = database.Games.Count + 1;
+        game.Id = id;
+        database.Games.Add(game);
         Console.WriteLine("Game adicionado com sucesso!");
-
     }
 
     public void ChangeGameStudio(Game game)
